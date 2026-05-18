@@ -16,16 +16,16 @@ a{text-decoration:none;color:inherit}
 .btn-primary{background:#fff;color:#0C1322}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 48px rgba(255,255,255,.1)}
 .btn-secondary{border-color:var(--line2);color:var(--muted);background:transparent}.btn-secondary:hover{color:var(--text);border-color:var(--soft);transform:translateY(-2px)}
 
-/* ═══ HERO — Endra style full bleed ═══ */
+/* ═══ HERO — Endra style: video IS the hero ═══ */
 .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
 .hero-video-wrap{position:absolute;inset:0;z-index:0}
 .hero-video-wrap video{width:100%;height:100%;object-fit:cover}
 .hero-video-wrap video::-webkit-media-controls{display:none !important}
-.hero-fade{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse at center,rgba(6,10,19,.4),rgba(6,10,19,.85) 70%),linear-gradient(180deg,transparent 60%,var(--bg) 100%)}
+.hero-fade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(6,10,19,.3) 0%,rgba(6,10,19,.15) 40%,rgba(6,10,19,.15) 60%,var(--bg) 100%)}
 .hero-content{position:relative;z-index:2;max-width:900px;padding:24px}
 .eyebrow{display:inline-block;border:1px solid var(--line2);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;padding:6px 16px;margin-bottom:28px}
-h1{font-family:Manrope,sans-serif;font-size:clamp(40px,6.5vw,80px);line-height:.95;letter-spacing:-.055em;font-weight:800}
-.sub{max-width:540px;margin:24px auto 0;color:var(--muted);font-size:17px;line-height:1.7}
+h1{font-family:Manrope,sans-serif;font-size:clamp(40px,6.5vw,80px);line-height:.95;letter-spacing:-.055em;font-weight:800;text-shadow:0 2px 40px rgba(6,10,19,.6)}
+.sub{max-width:540px;margin:24px auto 0;color:var(--muted);font-size:17px;line-height:1.7;text-shadow:0 1px 20px rgba(6,10,19,.5)}
 .cta-row{display:flex;justify-content:center;gap:14px;margin-top:36px;flex-wrap:wrap}
 
 /* Hero entrance */
@@ -137,10 +137,10 @@ h1{font-family:Manrope,sans-serif;font-size:clamp(40px,6.5vw,80px);line-height:.
 
 /* ═══ CTA ═══ */
 .cta-sec{overflow:hidden;min-height:500px;display:flex;align-items:center}
-.cta-video{position:absolute;inset:-8%;z-index:0;opacity:.4;filter:blur(4px) brightness(.6);transform:scale(1.16)}
+.cta-video{position:absolute;inset:-4%;z-index:0;opacity:.6;filter:brightness(.7);transform:scale(1.08)}
 .cta-video video{width:100%;height:100%;object-fit:cover}
 .cta-video video::-webkit-media-controls{display:none !important}
-.cta-fade{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse at center,rgba(6,10,19,.3),rgba(6,10,19,.9) 70%)}
+.cta-fade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,var(--bg) 0%,rgba(6,10,19,.2) 30%,rgba(6,10,19,.2) 70%,var(--bg) 100%)}
 .cta-sec .sub{max-width:500px}
 
 /* FOOTER */
