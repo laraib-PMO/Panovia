@@ -18,7 +18,7 @@ a{text-decoration:none;color:inherit}
 .btn-secondary{border:1px solid var(--line2);color:var(--muted);background:transparent}.btn-secondary:hover{color:var(--text);border-color:var(--ok);box-shadow:0 0 20px rgba(52,211,153,.06)}
 
 /* ═══ SCROLL-DRIVEN VIDEO HERO — like Endra ═══ */
-.scroll-video-container{height:400vh;position:relative}
+.scroll-video-container{height:200vh;position:relative}
 .scroll-video-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .scroll-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 .scroll-video::-webkit-media-controls{display:none !important}
@@ -186,7 +186,7 @@ a:focus-visible,.btn:focus-visible{outline:2px solid var(--ok);outline-offset:2p
 @media(max-width:768px){
   .links{display:none}.nav{height:52px;padding:0 16px}
   .sec{padding:80px 16px}
-  .scroll-video-container{height:250vh}
+  .scroll-video-container{height:180vh}
   h1{font-size:clamp(28px,7vw,40px);letter-spacing:-.04em}
   h1 br{display:inline}
   .scroll-text .sub{font-size:15px}
@@ -208,7 +208,7 @@ a:focus-visible,.btn:focus-visible{outline:2px solid var(--ok);outline-offset:2p
 }
 @media(max-width:380px){
   h1{font-size:24px}.scroll-text .sub{font-size:14px}.sec{padding:60px 12px}
-  .scroll-video-container{height:200vh}
+  .scroll-video-container{height:160vh}
   .btn{width:100%}.scroll-text .cta-row{flex-direction:column;align-items:stretch}
   .sec-title{font-size:20px}
 }
