@@ -94,6 +94,7 @@ h1 br{display:block}
 .hiw-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ok);font-weight:700}
 .hiw-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ok);opacity:.6}
 .hiw-text h3{font-family:Manrope,sans-serif;font-size:20px;letter-spacing:-.02em;font-weight:700}
+.hiw-text p{color:var(--muted);font-size:14px;line-height:1.6;margin-top:8px}
 .hiw-mock{padding:24px;background:rgba(5,10,18,.4);border-left:1px solid var(--line);display:flex;align-items:center}
 .hiw-row.reverse .hiw-mock{border-left:none;border-right:1px solid var(--line)}
 
