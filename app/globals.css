@@ -314,3 +314,76 @@ a:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offse
   .tool-grid{grid-template-columns:1fr}
 }
 @media(max-width:400px){h1{font-size:30px}.sec{padding:48px 12px}.btn{width:100%}.cta-row{flex-direction:column;align-items:stretch}.sec-title{font-size:24px}}
+
+/* ═══════════════════════════════════════════════════
+   REV 3 ADDITIONS — Clean hero + Two-tone sections
+   ═══════════════════════════════════════════════════ */
+
+/* FIX: Hero overlay is now inline-styled (dynamic), remove the static CSS gradient */
+.scroll-overlay{position:absolute;inset:0;z-index:1;pointer-events:none;transition:background .15s linear}
+
+/* ═══ TWO-TONE SECTION SYSTEM ═══ */
+.dark-sec{background:var(--bg);color:var(--text);padding:var(--section-pad) 24px;position:relative}
+.light-sec{background:#F8FAFC;color:#0F172A;padding:var(--section-pad) 24px;position:relative}
+
+/* Light section overrides */
+.light-sec .sec-label{color:#64748B}
+.light-sec .sec-title{color:#0F172A}
+.light-sec .dim{color:#64748B}
+.light-sec .sec-body{color:#334155}
+
+/* Light showcase */
+.light-sec .showcase-frame{background:#FFFFFF;border-color:#E2E8F0;box-shadow:0 40px 80px rgba(15,23,42,0.08),0 0 0 1px rgba(15,23,42,0.04)}
+.light-sec .showcase-bar{background:#F8FAFC;border-bottom-color:#E2E8F0}
+.light-sec .showcase-bar-title{color:#64748B}
+.light-sec .showcase-body{background:#FFFFFF}
+.light-sec .showcase-q{background:rgba(59,130,246,0.06);border-color:rgba(59,130,246,0.15);color:#0F172A}
+.light-sec .showcase-a{background:#F8FAFC;border-color:#E2E8F0;color:#334155}
+.light-sec .showcase-a strong{color:#0F172A}
+.light-sec .showcase-cite{background:rgba(5,150,105,0.06);border-color:rgba(5,150,105,0.15);color:#64748B}
+.light-sec .showcase-row{background:#F8FAFC;border-color:#E2E8F0}
+.light-sec .showcase-row:hover{border-color:rgba(5,150,105,0.3);box-shadow:0 0 16px rgba(5,150,105,0.06)}
+.light-sec .showcase-row .sr-label{color:#64748B}
+.light-sec .showcase-row .sr-value{color:#0F172A}
+.light-sec .showcase-row .sr-value.verified{color:#059669}
+.light-sec .showcase-badge{background:rgba(5,150,105,0.06);border-color:rgba(5,150,105,0.2);color:#059669}
+
+/* Light outcome cards */
+.light-sec .outcome-card{background:#FFFFFF;border-color:#E2E8F0}
+.light-sec .outcome-card:hover{border-color:rgba(5,150,105,0.3);box-shadow:0 16px 40px rgba(15,23,42,0.06)}
+.light-sec .outcome-card::before{background:#059669}
+.light-sec .outcome-stat{color:#059669}
+.light-sec .outcome-card h3{color:#0F172A}
+.light-sec .outcome-card p{color:#334155}
+
+/* Light trust cards */
+.light-sec .trust-card{background:#FFFFFF;border-color:#E2E8F0}
+.light-sec .trust-card:hover{border-color:#94A3B8;box-shadow:0 12px 32px rgba(15,23,42,0.06)}
+.light-sec .trust-card h3{color:#0F172A}
+.light-sec .trust-card p{color:#334155}
+
+/* Light resource cards */
+.light-sec .resource-card{background:#FFFFFF;border-color:#E2E8F0}
+.light-sec .resource-card:hover{border-color:#94A3B8;box-shadow:0 16px 40px rgba(15,23,42,0.06)}
+.light-sec .resource-card h3{color:#0F172A}
+.light-sec .resource-link{color:#2563EB}
+.light-sec .resource-tag{color:#2563EB;background:rgba(37,99,235,0.06);border-color:rgba(37,99,235,0.15)}
+
+/* Light connect grid */
+.light-sec .connect-item{background:#FFFFFF;border-color:#E2E8F0;color:#334155;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.light-sec .connect-output{background:#FFFFFF;border-color:#E2E8F0;color:#334155;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+
+/* Light final CTA */
+.light-sec.final-cta{background:linear-gradient(180deg,#F8FAFC 0%,#EFF6FF 100%)}
+.light-sec.final-cta::before{display:none}
+.btn-secondary-dark{border:1.5px solid #CBD5E1;color:#334155;background:transparent;padding:13.5px 32px}
+.btn-secondary-dark:hover{color:#0F172A;border-color:#0F172A}
+
+/* Light FAQ — stays dark for contrast */
+
+/* Dark integrations section glow */
+.dark-sec.int-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 400px at 50% 50%,rgba(52,211,153,0.04),transparent);pointer-events:none}
+
+/* Responsive overrides for light-sec */
+@media(max-width:768px){.light-sec,.dark-sec{padding:clamp(60px,8vw,100px) 16px}}
+@media(max-width:400px){.light-sec,.dark-sec{padding:48px 12px}}
