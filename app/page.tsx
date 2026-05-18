@@ -24,7 +24,7 @@ export default function Home() {
     <main>
     {/* ═══ HERO — full bleed video like Endra ═══ */}
     <section className="hero">
-      <div className="hero-video-wrap" aria-hidden="true"><video autoPlay muted loop playsInline preload="metadata"><source src="/hero-video.mp4" type="video/mp4"/></video></div>
+      <div className="hero-vid" aria-hidden="true"><video autoPlay muted loop playsInline preload="metadata"><source src="/hero-video.mp4" type="video/mp4"/></video></div>
       <div className="hero-fade" aria-hidden="true"/>
       <div className="hero-content">
         <div className="eyebrow rv">AEC project memory layer</div>
@@ -52,7 +52,7 @@ export default function Home() {
               <div className="pf-rows">
                 <div className="pf-row"><span>Drawing</span><span>A-201 · Rev C</span></div>
                 <div className="pf-row"><span>Source</span><span>RFI-0042 · Cited</span></div>
-                <div className="pf-row"><span>Approved by</span><span>J. Malik</span></div>
+                <div className="pf-row"><span>Approved by</span><span>John Davies</span></div>
                 <div className="pf-row"><span>Status</span><span className="pf-verified">Human Verified</span></div>
               </div>
             </div>
@@ -128,7 +128,7 @@ export default function Home() {
           )},
           {num:"03",label:"AI COPILOT",title:"Answers with cited sources. Page, section, revision.",mock:(
             <div className="mock-panel"><div className="mock-bar"><span className="dot g"/><span className="dot y"/><span className="dot d"/><span className="mock-t">Cited answer</span></div><div className="mock-body">
-              <div className="mock-chat"><div className="mock-q">Current approved revision for Drawing A-201?</div><div className="mock-a"><strong>Revision C</strong>, approved 12 May 2026 by J. Malik.<div className="mock-cite"><span className="cite-badge">Source</span>RFI-0042 — Page 3, §2.4</div></div></div>
+              <div className="mock-chat"><div className="mock-q">Current approved revision for Drawing A-201?</div><div className="mock-a"><strong>Revision C</strong>, approved 12 May 2026 by John Davies.<div className="mock-cite"><span className="cite-badge">Source</span>RFI-0042 — Page 3, §2.4</div></div></div>
             </div></div>
           )},
           {num:"04",label:"HUMAN VERIFICATION",title:"Critical actions require approval before they move.",mock:(
