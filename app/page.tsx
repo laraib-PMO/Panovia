@@ -82,8 +82,8 @@ export default function Home() {
 
           <div className="scroll-text" style={{ opacity: scrollPct < 0.15 ? 1 : Math.max(0, 1 - (scrollPct - 0.15) * 8) }}>
             <span className="eyebrow-pill"><span className="pulse-dot" />Panovia — by Attimo</span>
-            <h1>Turn scattered project<br />information into<br />reliable knowledge.</h1>
-            <p className="hero-sub">Find the right context, connect decisions and move work forward — without forcing a new system on the team.</p>
+            <h1>Reliable knowledge.<br />Traceable action.</h1>
+            <p className="hero-sub">Panovia connects scattered project information into cited answers, verified revisions and traceable decisions — without replacing the tools your team already uses.</p>
             <div className="cta-row" style={{ justifyContent: "center", marginTop: 36 }}>
               <a className="btn btn-primary" href="#demo">Watch the Demo</a>
               <a className="btn btn-secondary" href="#product">See the Workflow</a>
