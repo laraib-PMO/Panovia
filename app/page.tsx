@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-/* ═══ LOGO — FIX #6: larger (36px) ═══ */
 function Logo({ size = 36 }: { size?: number }) {
   return (
     <svg viewBox="0 0 190 215" width={size} height={Math.round(size * 1.13)} fill="none">
@@ -71,8 +70,10 @@ export default function Home() {
 
   const currentRole = roles.find((r) => r.id === activeRole) || roles[0];
 
+  /* ─── FIX #1: Dynamic overlay — starts VERY dark, reveals video on scroll ─── */
+  const overlayOpacity = Math.max(0.15, 0.92 - scrollPct * 1.8);
+
   return (<>
-    {/* ═══ NAV — #5 lighter links, #6 bigger logo ═══ */}
     <nav className={`nav ${navScrolled ? "scrolled" : ""}`}>
       <a className="brand" href="#">
         <span className="brand-icon"><Logo size={36} /></span>
@@ -89,17 +90,18 @@ export default function Home() {
     </nav>
 
     <main>
-      {/* ═══ HERO — #4 two-line slogan, #3 equal buttons ═══ */}
+      {/* ═══ HERO — clean on first load, video reveals on scroll ═══ */}
       <div className="scroll-video-container" ref={scrollRef}>
         <div className="scroll-video-sticky">
           <video ref={videoRef} muted playsInline preload="auto" className="scroll-video">
             <source src="/hero-video.mp4" type="video/mp4" />
           </video>
-          <div className="scroll-overlay" />
+          {/* Dynamic overlay: 92% opaque on load → transparent as you scroll */}
+          <div className="scroll-overlay" style={{ background: `rgba(5,10,18,${overlayOpacity})` }} />
 
           <div className="scroll-text" style={{ opacity: scrollPct < 0.15 ? 1 : Math.max(0, 1 - (scrollPct - 0.15) * 8) }}>
             <span className="eyebrow-pill"><span className="pulse-dot" />Panovia — by Attimo</span>
-            <h1>Turn scattered project information<br />into reliable knowledge.</h1>
+            <h1>Turn scattered project<br />information into<br />reliable knowledge.</h1>
             <p className="hero-sub">Panovia helps AEC teams find the right context, connect the right decisions and move work forward — without forcing a new system on the team.</p>
             <div className="cta-row" style={{ justifyContent: "center", marginTop: 36 }}>
               <a className="btn btn-primary" href="#demo">Watch the Demo</a>
@@ -128,11 +130,11 @@ export default function Home() {
         ))}
       </div>
 
-      {/* ═══ #2 LARGE PRODUCT SHOWCASE ═══ */}
-      <section id="product" className="sec">
+      {/* ═══ LIGHT SECTION — Product showcase ═══ */}
+      <section id="product" className="light-sec">
         <div className="wrap">
           <span className="sec-label rv">What Panovia does.</span>
-          <h2 className="sec-title rv center"><strong>See how context becomes<br />reliable knowledge.</strong></h2>
+          <h2 className="sec-title rv"><strong>See how context becomes<br />reliable knowledge.</strong></h2>
 
           <div className="showcase-frame rv">
             <div className="showcase-bar">
@@ -146,27 +148,15 @@ export default function Home() {
                   <div className="showcase-a">
                     <strong>Revision C</strong>, approved 12 May 2026 by J. Malik via RFI-0042.
                     <br /><br />
-                    This revision supersedes Rev B (issued 28 March 2026). The structural amendment was requested following the load calculation review in §2.4.
-                    <div className="showcase-cite">
-                      <span className="cite-badge">Source</span>
-                      RFI-0042 — Page 3, §2.4 · Drawing Register v12
-                    </div>
+                    This revision supersedes Rev B. The structural amendment was requested following the load calculation review in §2.4.
+                    <div className="showcase-cite"><span className="cite-badge">Source</span>RFI-0042 — Page 3, §2.4 · Drawing Register v12</div>
                   </div>
                 </div>
               </div>
               <div className="showcase-right">
                 <div className="showcase-badge"><span className="pulse-dot" />Current Revision · Verified</div>
-                {[
-                  { label: "Drawing", value: "A-201 · Rev C", cls: "" },
-                  { label: "Source", value: "RFI-0042 · Cited", cls: "" },
-                  { label: "Approved by", value: "J. Malik", cls: "" },
-                  { label: "Status", value: "Human Verified", cls: "verified" },
-                  { label: "Supersedes", value: "Rev B · 28 Mar", cls: "" },
-                ].map((row, i) => (
-                  <div key={i} className="showcase-row">
-                    <span className="sr-label">{row.label}</span>
-                    <span className={`sr-value ${row.cls}`}>{row.value}</span>
-                  </div>
+                {[{ label: "Drawing", value: "A-201 · Rev C", cls: "" }, { label: "Source", value: "RFI-0042 · Cited", cls: "" }, { label: "Approved by", value: "J. Malik", cls: "" }, { label: "Status", value: "Human Verified", cls: "verified" }, { label: "Supersedes", value: "Rev B · 28 Mar", cls: "" }].map((row, i) => (
+                  <div key={i} className="showcase-row"><span className="sr-label">{row.label}</span><span className={`sr-value ${row.cls}`}>{row.value}</span></div>
                 ))}
               </div>
             </div>
@@ -174,15 +164,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ BENEFITS (bolder cards) ═══ */}
-      <section className="sec">
+      {/* ═══ DARK SECTION — Benefits ═══ */}
+      <section className="dark-sec">
         <div className="wrap">
+          <span className="sec-label rv">The right context makes the right action possible.</span>
           <div className="bento-grid">
             {[
               { num: "01", title: "Find the right context", body: "Surface the right file, version, decision and related history — without making teams dig through folders or ask around." },
               { num: "02", title: "Keep decisions traceable", body: "Approvals, changes, meeting notes and rationale turned into a traceable memory of decisions — what changed, why and who owns it." },
-              { num: "03", title: "Coordinate across roles", body: "Office, site, consultants and reviewers see the same current project context. Responsibilities, next steps and supporting context — visible across the full workflow." },
-              { num: "04", title: "Work with your current tools", body: "Panovia sits on top of Google Drive, Docs, email and fragmented systems to make them more reliable — without replacing the tools your team already uses." },
+              { num: "03", title: "Coordinate across roles", body: "Office, site, consultants and reviewers see the same current project context. Responsibilities and next steps — visible across the full workflow." },
+              { num: "04", title: "Work with your current tools", body: "Panovia sits on top of Google Drive, Docs, email and fragmented systems to make them more reliable — without replacing anything." },
             ].map((card) => (
               <div key={card.num} className="bento-card rv">
                 <span className="card-num">{card.num}</span>
@@ -195,12 +186,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ #7 LIGHT SECTION — "From disconnected to connected" ═══ */}
-      <section className="light-section">
+      {/* ═══ LIGHT SECTION — How it connects ═══ */}
+      <section className="light-sec">
         <div className="wrap">
           <span className="sec-label rv center" style={{ textAlign: "center", display: "block" }}>How it connects</span>
           <h2 className="sec-title rv center"><strong>From disconnected records</strong><br /><span className="dim">to connected context.</span></h2>
-
           <div className="light-connect-grid rv">
             <div className="connect-col">
               <span className="connect-col-label">Scattered inputs</span>
@@ -208,151 +198,101 @@ export default function Home() {
                 <div key={item} className="connect-item">{item}</div>
               ))}
             </div>
-            <div className="connect-center">
-              <div className="connect-arrow">Panovia connects</div>
-            </div>
+            <div className="connect-center"><div className="connect-arrow">Panovia<br />connects</div></div>
             <div className="connect-col">
               <span className="connect-col-label">Connected output</span>
-              {[
-                { text: "Current Revision", status: "Verified", cls: "green" },
-                { text: "Cited Source", status: "Linked", cls: "blue" },
-                { text: "Decision Owner", status: "Confirmed", cls: "green" },
-                { text: "Next Action", status: "Traceable", cls: "blue" },
-                { text: "Evidence Trail", status: "Intact", cls: "green" },
-              ].map((item) => (
-                <div key={item.text} className="connect-output">
-                  <span>{item.text}</span>
-                  <span className={`connect-status ${item.cls}`}>{item.status}</span>
-                </div>
+              {[{ text: "Current Revision", status: "Verified", cls: "green" }, { text: "Cited Source", status: "Linked", cls: "blue" }, { text: "Decision Owner", status: "Confirmed", cls: "green" }, { text: "Next Action", status: "Traceable", cls: "blue" }, { text: "Evidence Trail", status: "Intact", cls: "green" }].map((item) => (
+                <div key={item.text} className="connect-output"><span>{item.text}</span><span className={`connect-status ${item.cls}`}>{item.status}</span></div>
               ))}
             </div>
           </div>
         </div>
       </section>
-      <div className="light-exit" />
 
-      {/* ═══ WORKFLOW STEPS ═══ */}
-      <section id="how-it-works" className="sec">
+      {/* ═══ DARK SECTION — Workflow Steps ═══ */}
+      <section id="how-it-works" className="dark-sec">
         <div className="wrap">
           <span className="sec-label rv">How Panovia works.</span>
           <h2 className="sec-title rv center"><strong>Four steps.</strong> <span className="dim">Scattered inputs to reliable knowledge.</span></h2>
 
-          {/* Step 1: Channel Capture */}
           <div className="step-row rv">
             <div className="step-info"><span className="step-num">01</span><span className="step-tag">Channel Capture</span><h3>Collects from the tools teams already use.</h3><p>WhatsApp messages, emails, voice notes, meetings and uploaded files — without changing how your team communicates.</p></div>
-            <div className="step-mock">
-              <div className="mock-panel"><div className="mock-bar"><span className="dot g" /><span className="dot y" /><span className="dot r" /><span className="mock-title">Capture</span></div><div className="mock-body">
-                {[{ icon: "✉️", text: "Email — Structural Rev C approval", st: "ok" }, { icon: "💬", text: "WhatsApp — Site photo + confirmation", st: "ok" }, { icon: "🎙️", text: "Voice note — Subcontractor update", st: "pending" }].map((r, i) => (
-                  <div key={i} className="mock-row"><span className="mock-icon">{r.icon}</span><span className="mock-text">{r.text}</span><span className={`mock-status ${r.st}`}>{r.st === "ok" ? "Captured" : "Processing"}</span></div>
-                ))}
-              </div></div>
-            </div>
+            <div className="step-mock"><div className="mock-panel"><div className="mock-bar"><span className="dot g" /><span className="dot y" /><span className="dot r" /><span className="mock-title">Capture</span></div><div className="mock-body">
+              {[{ icon: "✉️", text: "Email — Structural Rev C approval", st: "ok" }, { icon: "💬", text: "WhatsApp — Site photo + confirmation", st: "ok" }, { icon: "🎙️", text: "Voice note — Subcontractor update", st: "pending" }].map((r, i) => (
+                <div key={i} className="mock-row"><span className="mock-icon">{r.icon}</span><span className="mock-text">{r.text}</span><span className={`mock-status ${r.st}`}>{r.st === "ok" ? "Captured" : "Processing"}</span></div>
+              ))}
+            </div></div></div>
           </div>
 
-          {/* Step 2: Knowledge Vault */}
           <div className="step-row reverse rv">
-            <div className="step-info"><span className="step-num">02</span><span className="step-tag">Knowledge Vault</span><h3>Connects records into a living project memory.</h3><p>Documents, revisions, decisions and approvals in a structured graph. Not a folder. A traceable record of what happened, why and who owns it.</p></div>
-            <div className="step-mock">
-              <div className="mock-panel"><div className="mock-bar"><span className="dot g" /><span className="dot y" /><span className="dot r" /><span className="mock-title">Neural Map</span></div><div className="mock-body">
-                <div className="mock-nodes">{["Drawing A-201", "RFI-0042", "Rev C"].map((n) => <span key={n} className="mock-node">{n}</span>)}<span className="mock-node active">Approval ✓</span><span className="mock-node">Obligation</span><span className="mock-node">Handover</span></div>
-              </div></div>
-            </div>
+            <div className="step-info"><span className="step-num">02</span><span className="step-tag">Knowledge Vault</span><h3>Connects records into a living project memory.</h3><p>Documents, revisions, decisions and approvals in a structured graph. Not a folder.</p></div>
+            <div className="step-mock"><div className="mock-panel"><div className="mock-bar"><span className="dot g" /><span className="dot y" /><span className="dot r" /><span className="mock-title">Neural Map</span></div><div className="mock-body"><div className="mock-nodes">{["Drawing A-201", "RFI-0042", "Rev C"].map((n) => <span key={n} className="mock-node">{n}</span>)}<span className="mock-node active">Approval ✓</span><span className="mock-node">Obligation</span><span className="mock-node">Handover</span></div></div></div></div>
           </div>
 
-          {/* Step 3: AI Copilot */}
           <div className="step-row rv">
             <div className="step-info"><span className="step-num">03</span><span className="step-tag">AI Copilot</span><h3>Answers with cited sources. Page, section, revision.</h3><p>Grounded in project sources with citations attached. Every answer shows where it came from.</p></div>
-            <div className="step-mock">
-              <div className="mock-panel"><div className="mock-bar"><span className="dot g" /><span className="dot y" /><span className="dot r" /><span className="mock-title">Cited Answer</span></div><div className="mock-body">
-                <div className="mock-q">Current approved revision for Drawing A-201?</div>
-                <div className="mock-a"><strong>Revision C</strong>, approved 12 May 2026 by J. Malik.<div className="mock-cite"><span className="cite-badge">Source</span>RFI-0042 — Page 3, §2.4</div></div>
-              </div></div>
-            </div>
+            <div className="step-mock"><div className="mock-panel"><div className="mock-bar"><span className="dot g" /><span className="dot y" /><span className="dot r" /><span className="mock-title">Cited Answer</span></div><div className="mock-body"><div className="mock-q">Current approved revision for Drawing A-201?</div><div className="mock-a"><strong>Revision C</strong>, approved 12 May 2026 by J. Malik.<div className="mock-cite"><span className="cite-badge">Source</span>RFI-0042 — Page 3, §2.4</div></div></div></div></div>
           </div>
 
-          {/* Step 4: Task Tribunal */}
           <div className="step-row reverse rv">
             <div className="step-info"><span className="step-num">04</span><span className="step-tag">Task Tribunal</span><h3>Critical actions require explicit human approval.</h3><p>Human-to-Agent-to-Human governance. No unchecked automation in any workflow.</p></div>
-            <div className="step-mock">
-              <div className="mock-panel"><div className="mock-bar"><span className="dot g" /><span className="dot y" /><span className="dot r" /><span className="mock-title">Verification</span></div><div className="mock-body">
-                <div className="mock-approval">
-                  <div className="ap-row"><span className="ap-label">Action</span>Issue drawing set to site team</div>
-                  <div className="ap-row"><span className="ap-label">Source</span>RFI-0042 → Rev C</div>
-                  <div className="ap-row"><span className="ap-label">Status</span><span className="ap-pending">⏳ Awaiting approval</span></div>
-                  <div className="ap-actions"><button className="ap-btn ok">✓ Approve</button><button className="ap-btn no">✕ Reject</button></div>
-                </div>
-              </div></div>
-            </div>
+            <div className="step-mock"><div className="mock-panel"><div className="mock-bar"><span className="dot g" /><span className="dot y" /><span className="dot r" /><span className="mock-title">Verification</span></div><div className="mock-body"><div className="mock-approval"><div className="ap-row"><span className="ap-label">Action</span>Issue drawing set to site team</div><div className="ap-row"><span className="ap-label">Source</span>RFI-0042 → Rev C</div><div className="ap-row"><span className="ap-label">Status</span><span className="ap-pending">⏳ Awaiting approval</span></div><div className="ap-actions"><button className="ap-btn ok">✓ Approve</button><button className="ap-btn no">✕ Reject</button></div></div></div></div></div>
           </div>
         </div>
       </section>
 
-      {/* ═══ OUTCOMES ═══ */}
-      <section className="sec">
+      {/* ═══ LIGHT SECTION — Outcomes ═══ */}
+      <section className="light-sec">
         <div className="wrap">
           <span className="sec-label rv">What changes when Panovia is in place.</span>
           <h2 className="sec-title rv center"><strong>Measurable outcomes.</strong> <span className="dim">Not feature descriptions.</span></h2>
           <div className="outcome-grid">
-            <div className="outcome-card rv"><span className="outcome-stat">52%</span><h3>Less time finding information</h3><p>Teams stop navigating folders, chasing email threads and asking the same questions again. The right version, with the right context, is reachable.</p></div>
+            <div className="outcome-card rv"><span className="outcome-stat">52%</span><h3>Less time finding information</h3><p>Teams stop navigating folders, chasing email threads and asking the same questions. The right version, with the right context, is reachable.</p></div>
             <div className="outcome-card rv" style={{ transitionDelay: ".08s" }}><span className="outcome-stat">$31B</span><h3>Fewer wrong-version errors</h3><p>Rework driven by outdated drawings, missed approvals and unclear handovers is reduced. The current revision state is always visible.</p></div>
             <div className="outcome-card rv" style={{ transitionDelay: ".16s" }}><span className="outcome-stat">14h</span><h3>Reclaimed per person, per week</h3><p>Approvals do not go missing. Decisions have an evidence trail. Responsibilities are confirmed, not assumed.</p></div>
           </div>
         </div>
       </section>
 
-      {/* ═══ ROLES ═══ */}
-      <section id="roles" className="sec">
+      {/* ═══ DARK SECTION — Roles ═══ */}
+      <section id="roles" className="dark-sec">
         <div className="wrap">
           <span className="sec-label rv">Built for the realities of documentation-heavy work.</span>
           <h2 className="sec-title rv"><strong>The right context,</strong> <span className="dim">in the right hands.</span></h2>
           <p className="sec-body rv" style={{ marginBottom: 32 }}>Different roles hit the same broken system in different ways. Panovia helps each one work with the right information and clearer follow-through.</p>
           <div className="role-tabs rv">{roles.map((r) => (<button key={r.id} className={`role-tab ${activeRole === r.id ? "active" : ""}`} onClick={() => setActiveRole(r.id)}>{r.label}</button>))}</div>
-          <div className="role-content rv">
-            <h3>{currentRole.title}</h3>
-            <div className="role-detail">
-              <div className="role-detail-item"><label>Pain</label><p>{currentRole.pain}</p></div>
-              <div className="role-detail-item"><label>Mechanism</label><p>{currentRole.mechanism}</p></div>
-              <div className="role-detail-item"><label>Result</label><p>{currentRole.result}</p></div>
-            </div>
-          </div>
+          <div className="role-content rv"><h3>{currentRole.title}</h3><div className="role-detail"><div className="role-detail-item"><label>Pain</label><p>{currentRole.pain}</p></div><div className="role-detail-item"><label>Mechanism</label><p>{currentRole.mechanism}</p></div><div className="role-detail-item"><label>Result</label><p>{currentRole.result}</p></div></div></div>
         </div>
       </section>
 
-      {/* ═══ TRUST ═══ */}
-      <section id="trust" className="sec">
+      {/* ═══ LIGHT SECTION — Trust ═══ */}
+      <section id="trust" className="light-sec">
         <div className="wrap">
           <h2 className="sec-title rv center"><strong>Control, verifiability</strong> <span className="dim">and security are the foundation.</span></h2>
           <div className="trust-grid">
-            {[["Human verification", "Panovia supports human sign-off at key decision points. Semi-automation does not mean unchecked automation."], ["Source-linked answers", "Every answer cites its source: page, section, revision. No black box in any Panovia output."], ["Messy data ready", "Works with fragmented repositories, legacy formats and imperfect inputs — without requiring a clean-up project first."], ["Works with existing tools", "Google Drive, OneDrive, WhatsApp, Gmail, Teams and more. A layer, not a forced migration."], ["IP protection", "Client content and proprietary assets are not used to train models or shared beyond the scope of your workspace."], ["Standards enforcement", "Configurable naming conventions, approval protocols and organisational policies — not a generic default."]].map(([t, d], i) => (
+            {[["Human verification", "Panovia supports human sign-off at key decision points. Semi-automation does not mean unchecked automation."], ["Source-linked answers", "Every answer cites its source: page, section, revision. No black box in any Panovia output."], ["Messy data ready", "Works with fragmented repositories, legacy formats and imperfect inputs — without requiring a clean-up project first."], ["Works with existing tools", "Google Drive, OneDrive, WhatsApp, Gmail, Teams and more. A layer, not a forced migration."], ["IP protection", "Client content and proprietary assets are not used to train models or shared beyond your workspace."], ["Standards enforcement", "Configurable naming conventions, approval protocols and organisational policies — not a generic default."]].map(([t, d], i) => (
               <div key={i} className="trust-card rv" style={{ transitionDelay: `${(i % 3) * 0.08}s` }}><h3>{t}</h3><p>{d}</p></div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══ #9 INTEGRATIONS — HIGHLIGHTED ═══ */}
-      <section className="int-section">
+      {/* ═══ DARK SECTION — Integrations ═══ */}
+      <section className="dark-sec int-section">
         <div className="wrap center">
           <span className="sec-label rv">Integrations</span>
           <h2 className="sec-title rv center">Works with the tools<br />your team already uses.</h2>
           <div className="tool-grid rv">
-            {tools.map((t) => (
-              <div key={t.name} className="tool-card">
-                <div className="tool-icon">{t.icon}</div>
-                <div><div className="tool-name">{t.name}</div><div className="tool-sub">{t.sub}</div></div>
-              </div>
-            ))}
+            {tools.map((t) => (<div key={t.name} className="tool-card"><div className="tool-icon">{t.icon}</div><div><div className="tool-name">{t.name}</div><div className="tool-sub">{t.sub}</div></div></div>))}
           </div>
           <div className="format-row rv" style={{ marginTop: 28 }}>
-            {["IFC", "BIM / Revit", "DWG", "CAD", "PDF", "XLSX", "DOCX"].map((fmt) => (
-              <span key={fmt} className="format-tag">{fmt}</span>
-            ))}
+            {["IFC", "BIM / Revit", "DWG", "CAD", "PDF", "XLSX", "DOCX"].map((fmt) => (<span key={fmt} className="format-tag">{fmt}</span>))}
           </div>
         </div>
       </section>
 
-      {/* ═══ RESOURCES ═══ */}
-      <section className="sec">
+      {/* ═══ LIGHT SECTION — Resources ═══ */}
+      <section className="light-sec">
         <div className="wrap">
           <span className="sec-label rv">Learn how teams use Panovia.</span>
           <h2 className="sec-title rv">Resources</h2>
@@ -364,8 +304,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ FAQ ═══ */}
-      <section className="sec">
+      {/* ═══ DARK — FAQ ═══ */}
+      <section className="dark-sec">
         <div className="wrap">
           <h2 className="sec-title rv center">Common questions.</h2>
           <div className="faq-wrap rv">
@@ -374,19 +314,19 @@ export default function Home() {
             <FAQ q="Can Panovia work with WhatsApp and email?" a="Yes. Channel Capture ingests messages, emails and voice notes into structured project records — without changing how your team communicates." />
             <FAQ q="Can it identify the current approved revision?" a="Yes. The Current Truth Engine determines what is current, superseded, draft, pending or unresolved." />
             <FAQ q="How does human verification work?" a="Human-to-Agent-to-Human governance. Every external action requires explicit human approval before it moves." />
-            <FAQ q="Can it work with messy project data?" a="Yes. Built for fragmented, real-world inputs — not idealised clean data environments. No clean-up project required." />
+            <FAQ q="Can it work with messy project data?" a="Yes. Built for fragmented, real-world inputs — not idealised clean data environments." />
           </div>
         </div>
       </section>
 
-      {/* ═══ FINAL CTA ═══ */}
-      <section id="demo" className="final-cta">
+      {/* ═══ LIGHT — Final CTA ═══ */}
+      <section id="demo" className="light-sec final-cta">
         <div className="wrap">
           <h2 className="sec-title rv center">Ready to see Panovia<br />in action?</h2>
           <p className="sec-body center rv" style={{ marginBottom: 36 }}>A focused walkthrough for your specific coordination and documentation challenges.</p>
           <div className="cta-row center rv">
             <a className="btn btn-accent" href="mailto:hello@panovia.com">Watch the Demo</a>
-            <a className="btn btn-secondary" href="#">Get the Playbook</a>
+            <a className="btn btn-secondary-dark" href="#">Get the Playbook</a>
           </div>
         </div>
       </section>
