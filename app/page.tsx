@@ -76,6 +76,7 @@ export default function Home() {
     <section id="product" className="sec">
       <div className="wrap">
         <h2 className="sec-title rv"><strong>What Panovia does.</strong></h2>
+        <p className="sec-sub rv">52% of construction rework is caused by miscommunication and bad data. Panovia connects documents, decisions and responsibilities into a usable memory for action.</p>
 
         <div className="showcase-card rv">
           <div className="showcase-text">
@@ -128,7 +129,7 @@ export default function Home() {
           <div className="showcase-sm rv">
             <span className="showcase-label">Tool layer</span>
             <h3>Work with your current tools</h3>
-            <p>Sit on top of drives, email, messages and project files without forcing migration.</p>
+            <p>Sit on top of drives, email, messages and project files without replacing the tools your team already uses.</p>
             <div className="tool-grid">
               {["Gmail","WhatsApp","Teams","Drive","OneDrive","Revit","AutoCAD","IFC","PDF"].map((t,i)=><span key={i} className="tool-chip">{t}</span>)}
             </div>
@@ -148,25 +149,25 @@ export default function Home() {
                 <div key={i} className="mock-row"><span className="mock-icon">{ic}</span><span>{tx}</span><span className={`mock-status ${st}`}>{st==="ok"?"Captured":"Processing"}</span></div>
               ))}
             </div></div>
-          )},
-          {num:"02",label:"KNOWLEDGE VAULT",title:"Connects records into a living project memory.",mock:(
+          ),desc:"WhatsApp messages, emails, voice notes, meetings and uploaded files — without changing how your team communicates."},
+          {num:"02",label:"KNOWLEDGE VAULT",title:"Connects records into a living project memory.",desc:"Documents, revisions, decisions and approvals in a structured graph. Not a folder.",mock:(
             <div className="mock-panel"><div className="mock-bar"><span className="dot g"/><span className="dot y"/><span className="dot d"/><span className="mock-t">Memory</span></div><div className="mock-body">
               <div className="mock-nodes"><span className="mock-node">Drawing A-201</span><span className="mock-node">RFI-0042</span><span className="mock-node ok">Approval</span><span className="mock-node">Rev C</span></div>
             </div></div>
           )},
-          {num:"03",label:"AI COPILOT",title:"Answers with cited sources. Page, section, revision.",mock:(
+          {num:"03",label:"AI COPILOT",title:"Answers with cited sources. Page, section, revision.",desc:"Grounded in project sources, with citations attached. Every answer shows where it came from.",mock:(
             <div className="mock-panel"><div className="mock-bar"><span className="dot g"/><span className="dot y"/><span className="dot d"/><span className="mock-t">Cited answer</span></div><div className="mock-body">
               <div className="mock-chat"><div className="mock-q">Current approved revision for Drawing A-201?</div><div className="mock-a"><strong>Revision C</strong>, approved 12 May 2026 by John Davies.<div className="mock-cite"><span className="cite-badge">Source</span>RFI-0042 — Page 3, §2.4</div></div></div>
             </div></div>
           )},
-          {num:"04",label:"HUMAN VERIFICATION",title:"Critical actions require approval before they move.",mock:(
+          {num:"04",label:"HUMAN VERIFICATION",title:"Critical actions require approval before they move.",desc:"Human-to-Agent-to-Human governance. No unchecked automation in any workflow.",mock:(
             <div className="mock-panel"><div className="mock-bar"><span className="dot g"/><span className="dot y"/><span className="dot d"/><span className="mock-t">Verification</span></div><div className="mock-body">
               <div className="mock-approval"><div className="ap-row"><span className="ap-label">Action</span>Issue drawing set to site team</div><div className="ap-row"><span className="ap-label">Source</span>RFI-0042 → Rev C</div><div className="ap-row"><span className="ap-label">Status</span><span className="ap-pending">⏳ Awaiting approval</span></div><div className="ap-actions"><span className="ap-ok">✓ Approve</span><span className="ap-no">✕ Reject</span></div></div>
             </div></div>
           )}
         ].map((s,i)=>(
           <div key={s.num} className={`hiw-row rv ${i%2?"reverse":""}`}>
-            <div className="hiw-text"><span className="hiw-num">{s.num}</span><span className="hiw-label">{s.label}</span><h3>{s.title}</h3></div>
+            <div className="hiw-text"><span className="hiw-num">{s.num}</span><span className="hiw-label">{s.label}</span><h3>{s.title}</h3><p>{s.desc}</p></div>
             <div className="hiw-mock">{s.mock}</div>
           </div>
         ))}
@@ -178,7 +179,7 @@ export default function Home() {
       <div className="wrap">
         <h2 className="sec-title rv"><strong>The right context,</strong> <span className="dim">in the right hands.</span></h2>
         <div className="role-grid">
-          {[{c:"PM",t:"Project Managers",d:"Reference decisions, approvals and changes without reconstructing the project."},{c:"DC",t:"Document Controllers",d:"Maintain a traceable record instead of rebuilding one before audits."},{c:"FE",t:"Field Executors",d:"Reach the right version without calling the office or searching admin systems."}].map((r,i)=>(
+          {[{c:"PM",t:"Project Managers",d:"Critical decisions fragment across email, Teams and WhatsApp. When accountability matters, the record does not exist. Stop reconstructing the project. Reference it."},{c:"DC",t:"Document Controllers",d:"Version chaos. Audit preparation requires manual reconstruction of a record that should have been maintained automatically. The record is already there."},{c:"FE",t:"Field Executors",d:"No reliable way to confirm the right version without calling the office. No connectivity on site. The right version, in your hands, without the admin."}].map((r,i)=>(
             <div key={r.c} className="role-card rv" style={{transitionDelay:`${i*.1}s`}}><span className="role-code">{r.c}</span><h3>{r.t}</h3><p>{r.d}</p></div>
           ))}
         </div>
@@ -190,7 +191,7 @@ export default function Home() {
       <div className="wrap">
         <h2 className="sec-title rv center"><strong>Built for teams</strong> <span className="dim">that need to trust what they use.</span></h2>
         <div className="trust-grid">
-          {[["Source-linked answers","Every response includes document, page, section and revision."],["Human verification","Key decisions require explicit sign-off before action."],["Messy data ready","Works with fragmented repositories and imperfect inputs."],["Existing tools","Google Drive, OneDrive, WhatsApp, Gmail, Teams. Layer, not replacement."],["Your standards","Configurable naming conventions and approval protocols."],["Data handling","Designed for controlled project workspaces. Data handling is reviewed during implementation."]].map(([t,d],i)=>(
+          {[["Source-linked answers","Every answer cites its source: page, section, revision."],["Human-to-Agent-to-Human","Every external action requires explicit human approval. No unchecked automation."],["Messy data ready","Works with fragmented repositories, legacy formats and imperfect inputs."],["Works with existing tools","Google Drive, OneDrive, WhatsApp, Gmail, Teams. A layer, not a forced migration."],["Your standards","Configurable naming conventions, approval protocols and organisational policies."],["Data handling","Designed for controlled project workspaces. Data handling is reviewed during implementation."]].map(([t,d],i)=>(
             <div key={i} className="trust-card rv" style={{transitionDelay:`${(i%3)*.1}s`}}><h3>{t}</h3><p>{d}</p></div>
           ))}
         </div>
