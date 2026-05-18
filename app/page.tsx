@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function Logo({ size = 25 }: { size?: number }) {
   return (<svg viewBox="0 0 190 215" width={size} height={Math.round(size*1.13)} fill="none"><g transform="translate(0,215) scale(.1,-.1)" fill="currentColor"><path d="M905 1846c-43-19-646-375-669-395-44-38-46-59-46-481 0-429 1-442 51-486 13-11 168-106 344-210 320-189 320-189 380-189 53 0 69 5 135 44 87 51 111 71 105 81-5 8-96 62-515 308-107 63-205 125-217 139-23 24-23 28-23 303 0 190 4 287 12 304 17 39 457 296 506 296 49 0 475-249 503-294 18-29 19-50 17-303-3-317 8-285-135-368-48-27-88-55-90-61-5-14 220-144 249-144 36 0 187 91 208 126 19 30 20 52 20 450 0 398-1 421-20 451-10 18-36 43-57 56-88 56-591 351-628 368-47 22-89 23-130 5z"/><path d="M863 1143l-93-55 0-118 0-119 100-56 100-57 97 59 98 58 0 115 0 115-95 57c-52 32-99 58-105 57-5 0-52-25-102-56z"/></g></svg>);
@@ -10,6 +10,24 @@ function FAQ({ q, a }: { q: string; a: string }) {
 }
 
 export default function Home() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [scrollPct, setScrollPct] = useState(0);
+
+  useEffect(() => {
+    // Scroll-driven video
+    const handleScroll = () => {
+      if (!scrollRef.current || !videoRef.current) return;
+      const rect = scrollRef.current.getBoundingClientRect();
+      const scrollH = scrollRef.current.offsetHeight - window.innerHeight;
+      const progress = Math.min(Math.max(-rect.top / scrollH, 0), 1);
+      setScrollPct(progress);
+      videoRef.current.currentTime = progress * (videoRef.current.duration || 5.875);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     const ro = new IntersectionObserver((es) => es.forEach((e) => { if(e.isIntersecting) e.target.classList.add("vis"); }), { threshold: 0.08 });
     document.querySelectorAll(".rv").forEach((el) => ro.observe(el));
@@ -22,24 +40,43 @@ export default function Home() {
     </nav>
 
     <main>
-    {/* ═══ HERO — full bleed video like Endra ═══ */}
-    <section className="hero">
-      <div className="hero-vid" aria-hidden="true"><video autoPlay muted loop playsInline preload="metadata"><source src="/hero-video.mp4" type="video/mp4"/></video></div>
-      <div className="hero-fade" aria-hidden="true"/>
-      <div className="hero-content">
-        <div className="eyebrow rv">AEC project memory layer</div>
-        <h1 className="rv">Turn scattered AEC<br/>project information into<br/>reliable knowledge.</h1>
-        <p className="sub rv">Panovia connects drawings, RFIs, approvals, emails and site updates into cited answers, verified revisions and traceable action.</p>
-        <div className="cta-row rv"><a className="btn btn-primary" href="#demo">Watch Demo</a><a className="btn btn-secondary" href="#product">See the Workflow</a></div>
-      </div>
-    </section>
+    {/* ═══ SCROLL-DRIVEN VIDEO HERO ═══ */}
+    <div className="scroll-video-container" ref={scrollRef}>
+      <div className="scroll-video-sticky">
+        <video ref={videoRef} muted playsInline preload="auto" className="scroll-video">
+          <source src="/hero-video.mp4" type="video/mp4"/>
+        </video>
+        <div className="scroll-video-overlay"/>
 
-    {/* ═══ PRODUCT SHOWCASE — Endra-style large cards ═══ */}
+        {/* Text layers that appear/disappear based on scroll */}
+        <div className="scroll-text" style={{opacity: scrollPct < 0.15 ? 1 : Math.max(0, 1 - (scrollPct - 0.15) * 8)}}>
+          <div className="eyebrow">AEC project memory layer</div>
+          <h1>Turn scattered AEC<br/>project information into<br/>reliable knowledge.</h1>
+          <p className="sub">Panovia connects drawings, RFIs, approvals, emails and site updates into cited answers, verified revisions and traceable action.</p>
+          <div className="cta-row"><a className="btn btn-primary" href="#demo">Watch Demo</a><a className="btn btn-secondary" href="#product">See the Workflow</a></div>
+        </div>
+
+        <div className="scroll-text" style={{opacity: scrollPct > 0.3 && scrollPct < 0.6 ? Math.min(1, (scrollPct - 0.3) * 6) : scrollPct >= 0.6 ? Math.max(0, 1 - (scrollPct - 0.6) * 6) : 0}}>
+          <p className="scroll-caption">Context instead of search.<br/>Memory instead of storage.</p>
+        </div>
+
+        <div className="scroll-text" style={{opacity: scrollPct > 0.7 ? Math.min(1, (scrollPct - 0.7) * 5) : 0}}>
+          <p className="scroll-caption">Reliable knowledge for AEC teams.</p>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="scroll-hint" style={{opacity: scrollPct < 0.05 ? 1 : 0}}>
+          <span className="scroll-hint-text">Scroll to explore</span>
+          <span className="scroll-hint-arrow">↓</span>
+        </div>
+      </div>
+    </div>
+
+    {/* ═══ PRODUCT SHOWCASE ═══ */}
     <section id="product" className="sec">
       <div className="wrap">
-        <h2 className="sec-title rv"><strong>Context instead of search.</strong><br/><span className="dim">Memory instead of storage.</span></h2>
+        <h2 className="sec-title rv"><strong>What Panovia does.</strong></h2>
 
-        {/* Big 2-col showcase cards */}
         <div className="showcase-card rv">
           <div className="showcase-text">
             <span className="showcase-label">Current context</span>
@@ -67,9 +104,9 @@ export default function Home() {
           </div>
           <div className="showcase-visual">
             <svg className="showcase-svg" viewBox="0 0 440 260" fill="none">
-              <rect x="30" y="30" width="140" height="50" rx="8" stroke="var(--line2)" strokeWidth="1.5" fill="rgba(15,23,42,.5)"/>
+              <rect x="30" y="30" width="140" height="50" rx="8" stroke="var(--line2)" strokeWidth="1.5" fill="rgba(10,17,32,.5)"/>
               <text x="60" y="60" fill="var(--muted)" fontSize="12" fontFamily="'JetBrains Mono',monospace">RFI-0042</text>
-              <rect x="270" y="30" width="140" height="50" rx="8" stroke="var(--line2)" strokeWidth="1.5" fill="rgba(15,23,42,.5)"/>
+              <rect x="270" y="30" width="140" height="50" rx="8" stroke="var(--line2)" strokeWidth="1.5" fill="rgba(10,17,32,.5)"/>
               <text x="295" y="60" fill="var(--muted)" fontSize="12" fontFamily="'JetBrains Mono',monospace">Approval</text>
               <rect x="150" y="160" width="140" height="50" rx="8" stroke="var(--ok)" strokeWidth="2" fill="rgba(52,211,153,.08)"/>
               <text x="170" y="190" fill="var(--ok)" fontSize="12" fontFamily="'JetBrains Mono',monospace">Linked Record</text>
@@ -77,7 +114,7 @@ export default function Home() {
               <line className="draw-edge" x1="340" y1="80" x2="220" y2="160" stroke="var(--soft)" strokeWidth="1.5" strokeDasharray="6,4"/>
               <circle className="pulse-node" cx="100" cy="55" r="4" fill="var(--line2)" stroke="var(--soft)" strokeWidth="1.5"/>
               <circle className="pulse-node" cx="340" cy="55" r="4" fill="var(--line2)" stroke="var(--soft)" strokeWidth="1.5" style={{animationDelay:".6s"}}/>
-              <circle cx="220" cy="185" r="6" fill="var(--panel)" stroke="var(--ok)" strokeWidth="2"/>
+              <circle cx="220" cy="185" r="6" fill="var(--card)" stroke="var(--ok)" strokeWidth="2"/>
             </svg>
           </div>
         </div>
@@ -87,14 +124,6 @@ export default function Home() {
             <span className="showcase-label">Role context</span>
             <h3>Coordinate across roles</h3>
             <p>Give office, site, consultants and reviewers the same current project context.</p>
-            <svg className="showcase-svg-sm" viewBox="0 0 300 160" fill="none">
-              <path d="M50 120L150 145L250 120L150 95Z" stroke="var(--line2)" strokeWidth="1.2" fill="none"/>
-              <path d="M50 90L150 115L250 90L150 65Z" stroke="var(--soft)" strokeWidth="1.2" fill="none"/>
-              <path d="M50 60L150 85L250 60L150 35Z" stroke="var(--ok)" strokeWidth="1.5" fill="rgba(52,211,153,.05)"/>
-              <text x="135" y="56" fill="var(--ok)" fontSize="10" fontFamily="'JetBrains Mono',monospace">PM</text>
-              <text x="80" y="100" fill="var(--soft)" fontSize="9" fontFamily="'JetBrains Mono',monospace">DC</text>
-              <text x="195" y="100" fill="var(--soft)" fontSize="9" fontFamily="'JetBrains Mono',monospace">FE</text>
-            </svg>
           </div>
           <div className="showcase-sm rv">
             <span className="showcase-label">Tool layer</span>
@@ -108,11 +137,10 @@ export default function Home() {
       </div>
     </section>
 
-    {/* ═══ HOW IT WORKS — Endra-style stacked showcase ═══ */}
+    {/* ═══ HOW IT WORKS ═══ */}
     <section id="how" className="sec">
       <div className="wrap">
         <h2 className="sec-title rv center"><strong>Four steps.</strong> <span className="dim">Scattered inputs to reliable knowledge.</span></h2>
-
         {[
           {num:"01",label:"CHANNEL CAPTURE",title:"Collects from the tools teams already use.",mock:(
             <div className="mock-panel"><div className="mock-bar"><span className="dot g"/><span className="dot y"/><span className="dot d"/><span className="mock-t">Capture</span></div><div className="mock-body">
@@ -151,7 +179,7 @@ export default function Home() {
         <h2 className="sec-title rv"><strong>The right context,</strong> <span className="dim">in the right hands.</span></h2>
         <div className="role-grid">
           {[{c:"PM",t:"Project Managers",d:"Reference decisions, approvals and changes without reconstructing the project."},{c:"DC",t:"Document Controllers",d:"Maintain a traceable record instead of rebuilding one before audits."},{c:"FE",t:"Field Executors",d:"Reach the right version without calling the office or searching admin systems."}].map((r,i)=>(
-            <div key={r.c} className={`role-card rv`} style={{transitionDelay:`${i*.1}s`}}><span className="role-code">{r.c}</span><h3>{r.t}</h3><p>{r.d}</p></div>
+            <div key={r.c} className="role-card rv" style={{transitionDelay:`${i*.1}s`}}><span className="role-code">{r.c}</span><h3>{r.t}</h3><p>{r.d}</p></div>
           ))}
         </div>
       </div>
@@ -163,7 +191,7 @@ export default function Home() {
         <h2 className="sec-title rv center"><strong>Built for teams</strong> <span className="dim">that need to trust what they use.</span></h2>
         <div className="trust-grid">
           {[["Source-linked answers","Every response includes document, page, section and revision."],["Human verification","Key decisions require explicit sign-off before action."],["Messy data ready","Works with fragmented repositories and imperfect inputs."],["Existing tools","Google Drive, OneDrive, WhatsApp, Gmail, Teams. Layer, not replacement."],["Your standards","Configurable naming conventions and approval protocols."],["Data handling","Designed for controlled project workspaces. Data handling is reviewed during implementation."]].map(([t,d],i)=>(
-            <div key={i} className={`trust-card rv`} style={{transitionDelay:`${(i%3)*.1}s`}}><h3>{t}</h3><p>{d}</p></div>
+            <div key={i} className="trust-card rv" style={{transitionDelay:`${(i%3)*.1}s`}}><h3>{t}</h3><p>{d}</p></div>
           ))}
         </div>
       </div>
@@ -188,8 +216,6 @@ export default function Home() {
 
     {/* ═══ CTA ═══ */}
     <section id="demo" className="sec cta-sec">
-      <div className="cta-video" aria-hidden="true"><video autoPlay muted loop playsInline preload="metadata"><source src="/footer-video.mp4" type="video/mp4"/></video></div>
-      <div className="cta-fade" aria-hidden="true"/>
       <div className="wrap rel">
         <h2 className="sec-title rv center">See Panovia with your<br/>workflows in mind.</h2>
         <p className="sub rv center">A focused walkthrough for revision control, approvals, handovers and evidence trails.</p>
